@@ -4,10 +4,10 @@
 */
 
 void req2() {
-  digitalWrite(LED_BUILTIN, HIGH);
+  digitalWrite(LED_BUILTIN, true);
   Serial.println("LED ON @ " + String(millis()) + " ms");
   delay(1000);                      
-  digitalWrite(LED_BUILTIN, LOW);
+  digitalWrite(LED_BUILTIN, false);
   Serial.println("LED OFF @ " + String(millis()) + " ms");   
   delay(1000);  
 }

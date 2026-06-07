@@ -3,8 +3,8 @@
 */
 
 void req1(){
-  digitalWrite(LED_BUILTIN, HIGH);
+  digitalWrite(LED_BUILTIN, false);
   delay(1000);                      
-  digitalWrite(LED_BUILTIN, LOW); 
+  digitalWrite(LED_BUILTIN, true); 
   delay(1000);  
 }

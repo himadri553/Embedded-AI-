@@ -3,12 +3,13 @@
 
   src.ino
     - Acts as the main entry for this lab
-    - Change LAB_REQ to test each requremnet of the lab in /lab1.h
+    - Change LAB_REQ to test each requirement of the lab in ./lab1.h
   
   TODO:
     - Req 1: X
     - Req 2: X
-    - Req 3: 
+    - Req 3: X
+    - Req 4: 
 */
 #include "lab1.h"
 
@@ -29,5 +30,9 @@ void loop() {
     req2();
   #elif LAB_REQ == 3
     req3();
+  #elif LAB_REQ == 4
+    req4();
+  #elif LAB_REQ == 5
+    req5();
   #endif
 }

@@ -1,5 +1,5 @@
 /*
-  Requierment 3
+  Requirement 3
   
   Wire a push-button between digital pin D2 and 3V3, with a 10 kΩ pull-down resistor from
   D2 to GND. Wire an external LED on D3 with a 220 Ω series resistor to GND. Write a sketch
@@ -8,14 +8,12 @@
 
 
 */
-void req3() {
-  // Init states
-  static bool ledState        = false;
-  static unsigned long lastDebounceTime = 0;
+void req3() {  
+  // Get current state
   unsigned long current_time = millis();
   bool current_button_state = digitalRead(BUTTON_PIN); 
 
-  // Check if a "fresh", debounced button press occured
+  // When the button is pressed, check if the button is debounced
   if (current_button_state) {
     if ((current_time - lastDebounceTime) > DEBOUNCE_DELAY) {
       // Toggle LED state
@@ -31,6 +29,5 @@ void req3() {
 
   // Update LED state
   digitalWrite(LED_PIN, ledState);
-
-
+  delay(100);
 }
