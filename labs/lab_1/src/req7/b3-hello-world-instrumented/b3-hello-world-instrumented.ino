@@ -13,6 +13,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
+// ===========================================================================
+// Lab 1 · B.3 starter — instrument this sketch.
+//
+// This is the working hello_world sketch (B.1/B.2). Your B.3 task is to
+// measure inference latency: wrap each Invoke() with micros(), and over
+// at least 100 successive inferences report the MIN, MEAN, and MAX (also
+// note the flash/RAM figures from the IDE compile output) — see handout
+// §B.3. The two TODO(student) blocks below mark exactly where to add
+// code; the rest of the sketch is intentionally unchanged. Build/flash
+// it first to confirm it runs, then add your instrumentation.
+// ===========================================================================
+
 #include <TensorFlowLite.h>
 
 #include "constants.h"
@@ -36,6 +48,15 @@ int inference_count = 0;
 constexpr int kTensorArenaSize = 2000;
 // Keep aligned to 16 bytes for CMSIS
 alignas(16) uint8_t tensor_arena[kTensorArenaSize];
+
+// Rolling-window latency accumulators (B.3): track Invoke() timings
+// across the current batch of inferences so min/mean/max can be
+// reported once the window fills, then reset for the next batch.
+constexpr int kLatencyWindowSize = 100;
+int latency_sample_count = 0;
+unsigned long latency_sum_us = 0;
+unsigned long latency_min_us = 0xFFFFFFFFUL;
+unsigned long latency_max_us = 0;
 }  // namespace
 
 // The name of this function is important for Arduino compatibility.
@@ -92,11 +113,38 @@ void loop() {
   // Place the quantized input in the model's input tensor
   input->data.int8[0] = x_quantized;
 
+  unsigned long invoke_start_us = micros();
+
   // Run inference, and report any error
   TfLiteStatus invoke_status = interpreter->Invoke();
   if (invoke_status != kTfLiteOk) {
     MicroPrintf("Invoke failed on x: %f\n", static_cast<double>(x));
     return;
+  }
+
+  // Accumulate this Invoke() timing into the rolling window. Serial is
+  // used (not MicroPrintf) because this TFLM build's MicroPrintf mishandles
+  // %lu for the unsigned long that micros() returns.
+  unsigned long invoke_elapsed_us = micros() - invoke_start_us;
+  latency_sample_count++;
+  latency_sum_us += invoke_elapsed_us;
+  if (invoke_elapsed_us < latency_min_us) latency_min_us = invoke_elapsed_us;
+  if (invoke_elapsed_us > latency_max_us) latency_max_us = invoke_elapsed_us;
+
+  if (latency_sample_count >= kLatencyWindowSize) {
+    unsigned long latency_mean_us = latency_sum_us / latency_sample_count;
+    Serial.print("[LAT] min=");
+    Serial.print(latency_min_us);
+    Serial.print(" us, mean=");
+    Serial.print(latency_mean_us);
+    Serial.print(" us, max=");
+    Serial.print(latency_max_us);
+    Serial.println(" us");
+
+    latency_sample_count = 0;
+    latency_sum_us = 0;
+    latency_min_us = 0xFFFFFFFFUL;
+    latency_max_us = 0;
   }
 
   // Obtain the quantized output from model's output tensor
