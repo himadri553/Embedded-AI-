@@ -9,7 +9,7 @@
     - Req 1: X
     - Req 2: X
     - Req 3: X
-    - Req 4: 
+    - Req 4: X
 */
 #include "lab1.h"
 
