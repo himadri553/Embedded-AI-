@@ -11,3 +11,5 @@
 #define LED_GREEN A1
 #define LED_BLUE A2
 #define LED_INDICATOR A3
+
+/* Functions defs */
