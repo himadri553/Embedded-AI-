@@ -76,9 +76,10 @@ void setup() {
     Serial.println("Model schema version mismatch!");
     while (1) { ; }
   }
-static tflite::MicroMutableOpResolver<2> resolver;
+static tflite::MicroMutableOpResolver<3> resolver;
 resolver.AddFullyConnected();
 resolver.AddRelu();
+resolver.AddLogistic();
 
   static tflite::MicroInterpreter static_interpreter(
     model,
