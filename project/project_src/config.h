@@ -54,4 +54,9 @@ bool inference_run();
 /* Decision function declarations */
 const char* decision_run();
 
+/* Output function declarations */
+void output_init();
+void output_drive(const char* label);
+void blink(int pin);
+
 #endif  // CONFIG_H

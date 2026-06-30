@@ -11,6 +11,8 @@ void setup() {
   Serial.begin(SERIAL_BAUD);
   while (!Serial) { ; }
 
+  output_init();
+
   Serial.println("Initializing audio...");
   if (!audio_init()) {
     Serial.println("ERR: audio_init() failed — halting.");
@@ -29,5 +31,6 @@ void loop() {
   }
 
   const char* label = decision_run();
+  output_drive(label);
   Serial.println(label);
 }
