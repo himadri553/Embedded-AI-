@@ -17,7 +17,7 @@
 #define LED_GREEN     A1
 #define LED_BLUE      A2
 #define LED_INDICATOR A3
-#define SERIAL_BAUD   9600  
+#define SERIAL_BAUD   115200   
 
 /* Audio Config */
 #define SAMPLE_RATE   16000   

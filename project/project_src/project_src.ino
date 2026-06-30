@@ -10,7 +10,6 @@
 void setup() {
   // Start terminal and Pin Inits
   Serial.begin(SERIAL_BAUD);
-  while (!Serial) { ; }
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_GREEN, OUTPUT);
   pinMode(LED_BLUE, OUTPUT);
@@ -30,16 +29,14 @@ void setup() {
 
 void loop() {
   /* Sample audio from mic */
-  // for valid samples, get raw audio levels (peak)
+  // Print raw PCM samples as CSV for EI data forwarder
   if (samplesRead == 0) return;
-  int16_t peak = 0;
   for (int i = 0; i < samplesRead; i++) {
-    int16_t v = abs(sampleBuffer[i]);
-    if (v > peak) peak = v;
+    Serial.print(sampleBuffer[i]);
+    if (i < samplesRead - 1) Serial.print(",");
   }
-  Serial.println(peak);
-  samplesRead = 0;  // consume the buffer
-
+  Serial.println(); 
+  samplesRead = 0;  
 
 
   /* Later steps */
