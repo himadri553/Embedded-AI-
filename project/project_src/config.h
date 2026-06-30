@@ -44,4 +44,8 @@ void pdm_data_ready_inference_callback();
 signed short* audio_get_buffer();
 int audio_get_slice_size();
 
+/* Inference function declarations */
+void inference_init();
+bool inference_run();
+
 #endif  // CONFIG_H

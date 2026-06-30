@@ -10,6 +10,9 @@ Latency: 259ms
 RAM: 19.8K
 Flash: 32.6K
 
+## Inference Stats
+(DSP: 51ms, Classification: 19ms)
+
 ## Software arch: brainstorm
 - main: main loop
 - drivers: separate functions for LEDs and microphone
