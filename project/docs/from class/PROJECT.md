@@ -5,9 +5,10 @@ Using the onboard microphone on the Arduino Nano, classify someone saying the wo
 ```
 ```
 
-## TODO
-- MVP code for getting microphone data
-- 
+## Model Estimates
+Latency: 259ms 
+RAM: 19.8K
+Flash: 32.6K
 
 ## Software arch: brainstorm
 - main: main loop
