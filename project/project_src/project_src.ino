@@ -3,7 +3,6 @@
 
   project_src.ino
     - Is the main entry of this program
-    - Main loop does
 
 */
 #include "config.h"
