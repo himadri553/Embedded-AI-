@@ -48,4 +48,10 @@ int audio_get_slice_size();
 void inference_init();
 bool inference_run();
 
+/* Decision config */
+#define CONFIDENCE_THRESHOLD 0.80f
+
+/* Decision function declarations */
+const char* decision_run();
+
 #endif  // CONFIG_H

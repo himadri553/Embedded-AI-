@@ -28,5 +28,6 @@ void loop() {
     return;
   }
 
-  inference_run();
+  const char* label = decision_run();
+  Serial.println(label);
 }

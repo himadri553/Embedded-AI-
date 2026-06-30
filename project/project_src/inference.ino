@@ -9,7 +9,6 @@
 
 /* Private variables ------------------------------------------------------- */
 static bool debug_nn = false;
-static int  print_results = -(EI_CLASSIFIER_SLICES_PER_MODEL_WINDOW);
 
 /* Public functions -------------------------------------------------------- */
 
