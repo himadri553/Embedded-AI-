@@ -7,60 +7,44 @@
 */
 #include "config.h"
 
-/* --- Step 1 test scratch: remove once Audio Capture is verified --- */
-#define AUDIO_TEST 1
-static int16_t  testSamples[AUDIO_CHUNK];
-static unsigned long lastRateCheck = 0;
-static unsigned long samplesThisSecond = 0;
-
 void setup() {
-  // Start terminal
+  // Start terminal and Pin Inits
   Serial.begin(SERIAL_BAUD);
-
-  // Pin Inits
+  while (!Serial) { ; }
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_GREEN, OUTPUT);
   pinMode(LED_BLUE, OUTPUT);
   pinMode(LED_INDICATOR, OUTPUT);
 
-  // Audio Capture Layer init
-  if (!audioBegin()) {
-    Serial.println("ERROR: PDM mic failed to start");
-    while (1);  // halt - nothing works without the mic
+  /* Setup mic */ 
+  PDM.onReceive(onPDMdata);
+  // PDM.setGain(80);   // uncomment/tune if your levels read too low
+
+  // Handle mic fail
+  if (!PDM.begin(PDM_CHANNELS, SAMPLE_RATE)) {
+    Serial.println("Failed to start PDM microphone!");
+    while (1) { ; }
   }
+
 }
 
 void loop() {
-  // Get new audio if PCM samples has accumulated. Return if not ready
-  if (!audioSamplesReady()) {
-    return;
+  /* Sample audio from mic */
+  // for valid samples, get raw audio levels (peak)
+  if (samplesRead == 0) return;
+  int16_t peak = 0;
+  for (int i = 0; i < samplesRead; i++) {
+    int16_t v = abs(sampleBuffer[i]);
+    if (v > peak) peak = v;
   }
-  int n = audioReadSamples(testSamples, AUDIO_CHUNK);
+  Serial.println(peak);
+  samplesRead = 0;  // consume the buffer
 
-#if AUDIO_TEST
-  // Non-blocking check: indicator should stay visibly responsive
-  digitalWrite(LED_INDICATOR, !digitalRead(LED_INDICATOR));
 
-  // Serial Plotter check: one sample per line shows the waveform
-  for (int i = 0; i < n; i++) {
-    Serial.println(testSamples[i]);
-  }
 
-  // Rate check: should print ~16000 samples/sec
-  samplesThisSecond += n;
-  if (millis() - lastRateCheck >= 1000) {
-    // (comment out the plotter loop above when reading this number)
-    // Serial.print("samples/sec: "); Serial.println(samplesThisSecond);
-    samplesThisSecond = 0;
-    lastRateCheck = millis();
-  }
-#endif
-
+  /* Later steps */
   // Compute features
-
   // Run inference
-
   // Output a decision and drive leds
-
   // Advance the window
 }
