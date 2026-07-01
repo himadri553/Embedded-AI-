@@ -46,6 +46,7 @@ void output_drive(const char* label) {
     - Blinks a single LED pin once
 */
 void blink(int pin) {
-    digitalWrite(pin, HIGH); delay(200);
-    digitalWrite(pin, LOW);  delay(200);
+    digitalWrite(pin, HIGH);
+    delay(200);
+    digitalWrite(pin, LOW);
 }
