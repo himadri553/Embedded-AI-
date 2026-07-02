@@ -5,13 +5,31 @@ Green 79% / 21% (30s / 8s)
 Noise 81% / 19% (30s / 7s)
 Red 81% / 19% (34s / 8s)
 
-- [ ] DSP block parameters (frame length/stride, # coefficients) — NOT YET FOUND (pull from EI DSP block config page)
-- [ ] Model layer count/parameter count — NOT YET FOUND (pull from EI model architecture page)
+- [x] DSP block parameters (frame length/stride, # coefficients) — FOUND
+Block type: Mel-filterbank energy (MFE)
+Frame length: 0.02s
+Frame stride: 0.01s
+Filter number: 40
+FFT length: 256
+Low frequency: 0 Hz
+High frequency: default (not manually set)
+Noise floor: -52 dB
+- [x] Model layer count/parameter count — FOUND
+Architecture: 1D CNN
+Input: 3,960 features → reshaped to 40 columns
+Layer 1: Conv1D, 8 filters, kernel size 3
+Dropout (0.25)
+Layer 2: Conv1D, 16 filters, kernel size 3
+Dropout (0.25)
+Flatten
+Output: 5 classes (softmax)
+Exact parameter count: NOT SHOWN on this page — check training output log (Keras 
+summary printed before epoch progress) for the "Total params" line
 - [x] Final validation accuracy — FOUND: 91.18%
 - [ ] Final training accuracy/loss — NOT YET FOUND
 - [x] Training time — FOUND 2m 6s
 - [ ] Exact tensor arena size (bytes) — NOT YET FOUND (check EI deployment page or Arduino serial output)
-- [x] Quantization status (INT8 or float32) — NOT YET FOUND (confirm from EI export settings)
+- [x] Quantization status (INT8 or float32) — FOUND
 Quantized INT8
 - [x] Known confusion pattern — FOUND: green→red confusion (~25%)
 - [x] Full per-class precision/recall/F1 — FOUND (pull from EI Model Testing page)
